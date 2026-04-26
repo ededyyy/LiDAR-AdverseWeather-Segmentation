@@ -1,0 +1,25 @@
+model:
+  name: minkunet
+  cr: 0.5
+  learnable_drop: true  # lpd开关
+  lpd:
+    lpd_mask_prob: 0.03
+    # Let supervised + SJ stabilize before any dropping.
+    warmup_epochs: 12
+    # Keep almost all points; only light stochastic thinning beyond this floor.
+    min_keep_ratio: 0.995
+    min_keep_points: 90000
+    # Keep non-zero for "LPD is present", but make its training effect tiny.
+    dqn_loss_weight: 1e-6
+
+    dqn_train_start_iter: 50000
+    dqn_gamma: 0.99
+    dqn_eps_start: 0.2
+    dqn_eps_end: 0.02
+    dqn_eps_decay: 20000
+    dqn_tau: 0.005
+    dqn_replay_memory_size: 10000
+
+    # Higher threshold => Q must be larger to keep => more drops (see model code).
+    dqn_drop_threshold: 0.02
+    dqn_drop_threshold_explore: 0.01
